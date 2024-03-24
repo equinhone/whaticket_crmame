@@ -166,7 +166,7 @@ export async function SendWhatsAppMedia({
     } else {
       options = {
         image: fs.readFileSync(pathMedia),
-        caption: body
+        caption:""// body
       };
     }
 
@@ -196,6 +196,7 @@ export async function SendWhatsAppMediaAPI({
 
     const pathMedia = media.path;
     const typeMessage = media.mimetype.split("/")[0];
+    console.log("Tipo de Media: "+typeMessage)
     let options: AnyMessageContent;
 
     if (typeMessage === "video") {
@@ -241,8 +242,6 @@ export async function SendWhatsAppMediaAPI({
         caption: body
       };
     }
-
-
 
     const sentMessage = await (await wbot).sendMessage(
       `${number}@${false ? "g.us" : "s.whatsapp.net"}`,
