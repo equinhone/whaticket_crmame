@@ -231,25 +231,23 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
 
     console.log("Number: "+number)
     console.log("PicUrl: "+profilePicUrl)
-    
 
-    /*const contactData = {
+
+    const contactData = {
       name: `${number}`,
       number,
       profilePicUrl,
       isGroup: false,
       companyId
-    };*/
+    };
 
-    //const contact = await CreateOrUpdateContactService(contactData);
+    const contact = await CreateOrUpdateContactService(contactData);
 
-    //const createTicket = await FindOrCreateTicketService(contact, whatsapp.id!, 0, companyId);
+    const createTicket = await FindOrCreateTicketService(contact, whatsapp.id!, 0, companyId);
 
-    //const ticket = await ShowTicketService(createTicket.id, companyId);
-    
-    
+    const ticket = await ShowTicketService(createTicket.id, companyId);       
 
-    /*if (medias) {
+    if (medias) {
       await Promise.all(
         medias.map(async (media: Express.Multer.File) => {
           await req.app.get("queues").messageQueue.add(
@@ -279,9 +277,9 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
       await createTicket.update({
         lastMessage: body,
       });
-    }*/
+    }
 
-    //SetTicketMessagesAsRead(ticket);
+    SetTicketMessagesAsRead(ticket);
 
     return res.send({ mensagem: "Mensagem enviada" });
   } catch (err: any) {
