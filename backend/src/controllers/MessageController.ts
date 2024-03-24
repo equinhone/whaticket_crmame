@@ -219,7 +219,7 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
 
     const numberToTest = messageData.number;
     const body = messageData.body;
-    console.log("Body: "+body)
+    //console.log("Body: "+body)
     const companyId = whatsapp.companyId;
 
     const CheckValidNumber = await CheckContactNumber(numberToTest, companyId);
@@ -229,8 +229,8 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
       companyId
     );
 
-    console.log("Number: "+number)
-    console.log("PicUrl: "+profilePicUrl)
+    //console.log("Number: "+number)
+    //console.log("PicUrl: "+profilePicUrl)
 
 
     const contactData = {
@@ -256,8 +256,8 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
               whatsappId,
               data: {
                 number,
-                body: media.originalname,
-                //body: body,
+                //body: media.originalname,
+                body: body,
                 mediaPath: media.path
               }
             },
