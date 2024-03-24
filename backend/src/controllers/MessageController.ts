@@ -242,9 +242,9 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
 
     const contact = await CreateOrUpdateContactService(contactData);
 
-    const createTicket = await FindOrCreateTicketService(contact, whatsapp.id!, 0, companyId);
+    //const createTicket = await FindOrCreateTicketService(contact, whatsapp.id!, 0, companyId);
 
-    const ticket = await ShowTicketService(createTicket.id, companyId);       
+    //const ticket = await ShowTicketService(createTicket.id, companyId);       
 
     if (medias) {
       await Promise.all(
@@ -265,7 +265,7 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
         })
       );
     } else {
-      await SendWhatsAppMessage({ body, ticket });
+      /*await SendWhatsAppMessage({ body, ticket });
       setTimeout(async () => {
         await UpdateTicketService({
           ticketId: ticket.id,
@@ -275,10 +275,10 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
       }, 1000);
       await createTicket.update({
         lastMessage: body,
-      });
+      });*/
     }
 
-    SetTicketMessagesAsRead(ticket);
+    //SetTicketMessagesAsRead(ticket);
 
     return res.send({ mensagem: "Mensagem enviada" });
   } catch (err: any) {
