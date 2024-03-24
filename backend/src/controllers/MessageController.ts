@@ -228,6 +228,10 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
       number,
       companyId
     );
+
+    console.log("Number: "+number)
+    console.log("PicUrl: "+profilePicUrl)
+
     /*const contactData = {
       name: `${number}`,
       number,
