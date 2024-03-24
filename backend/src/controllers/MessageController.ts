@@ -240,7 +240,7 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
       companyId
     };
 
-    const contact = await CreateOrUpdateContactService(contactData);
+    //const contact = await CreateOrUpdateContactService(contactData);
 
     //const createTicket = await FindOrCreateTicketService(contact, whatsapp.id!, 0, companyId);
 
