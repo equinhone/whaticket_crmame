@@ -139,7 +139,8 @@ export const send = async (req: Request, res: Response): Promise<Response> => {
     const createTicket = await FindOrCreateTicketService(contact, whatsapp.id!, 0, companyId);
 
     const ticket = await ShowTicketService(createTicket.id, companyId);
-  
+    
+    console.log(body)
 
     if (medias) {
       await Promise.all(
@@ -187,6 +188,95 @@ export const send = async (req: Request, res: Response): Promise<Response> => {
     }
 
     SetTicketMessagesAsRead(ticket);
+
+    return res.send({ mensagem: "Mensagem enviada" });
+  } catch (err: any) {
+    if (Object.keys(err).length === 0) {
+      throw new AppError(
+        "Não foi possível enviar a mensagem, tente novamente em alguns instantes"
+      );
+    } else {
+      throw new AppError(err.message);
+    }
+  }
+};
+
+export const sendMessage = async (req: Request, res: Response): Promise<Response> => {
+  const { whatsappId } = req.params as unknown as { whatsappId: number };
+  const messageData: MessageData = req.body;
+  const medias = req.files as Express.Multer.File[];
+
+  try {
+    const whatsapp = await Whatsapp.findByPk(whatsappId);
+
+    if (!whatsapp) {
+      throw new Error("Não foi possível realizar a operação");
+    }
+
+    if (messageData.number === undefined) {
+      throw new Error("O número é obrigatório");
+    }
+
+    const numberToTest = messageData.number;
+    const body = messageData.body;
+    console.log("Body: "+body)
+    const companyId = whatsapp.companyId;
+
+    const CheckValidNumber = await CheckContactNumber(numberToTest, companyId);
+    const number = CheckValidNumber.jid.replace(/\D/g, "");
+    const profilePicUrl = await GetProfilePicUrl(
+      number,
+      companyId
+    );
+    /*const contactData = {
+      name: `${number}`,
+      number,
+      profilePicUrl,
+      isGroup: false,
+      companyId
+    };*/
+
+    //const contact = await CreateOrUpdateContactService(contactData);
+
+    //const createTicket = await FindOrCreateTicketService(contact, whatsapp.id!, 0, companyId);
+
+    //const ticket = await ShowTicketService(createTicket.id, companyId);
+    
+    
+
+    /*if (medias) {
+      await Promise.all(
+        medias.map(async (media: Express.Multer.File) => {
+          await req.app.get("queues").messageQueue.add(
+            "SendMessage",
+            {
+              whatsappId,
+              data: {
+                number,
+                //body: media.originalname,
+                body: body,
+                mediaPath: media.path
+              }
+            },
+            { removeOnComplete: true, attempts: 3 }
+          );
+        })
+      );
+    } else {
+      await SendWhatsAppMessage({ body, ticket });
+      setTimeout(async () => {
+        await UpdateTicketService({
+          ticketId: ticket.id,
+          ticketData: { status: "closed" },
+          companyId
+        });
+      }, 1000);
+      await createTicket.update({
+        lastMessage: body,
+      });
+    }*/
+
+    //SetTicketMessagesAsRead(ticket);
 
     return res.send({ mensagem: "Mensagem enviada" });
   } catch (err: any) {
