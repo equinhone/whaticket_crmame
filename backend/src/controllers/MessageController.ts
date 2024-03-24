@@ -256,8 +256,8 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
               whatsappId,
               data: {
                 number,
-                //body: media.originalname,
-                body: body,
+                body: media.originalname,
+                //body: body,
                 mediaPath: media.path
               }
             },
