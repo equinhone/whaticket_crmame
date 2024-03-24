@@ -232,7 +232,6 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
     //console.log("Number: "+number)
     //console.log("PicUrl: "+profilePicUrl)
 
-
     const contactData = {
       name: `${number}`,
       number,
