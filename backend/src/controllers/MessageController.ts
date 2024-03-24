@@ -13,7 +13,7 @@ import ShowTicketService from "../services/TicketServices/ShowTicketService";
 import FindOrCreateTicketService from "../services/TicketServices/FindOrCreateTicketService";
 import UpdateTicketService from "../services/TicketServices/UpdateTicketService";
 import DeleteWhatsAppMessage from "../services/WbotServices/DeleteWhatsAppMessage";
-import SendWhatsAppMedia from "../services/WbotServices/SendWhatsAppMedia";
+import {SendWhatsAppMedia, SendWhatsAppMediaAPI} from "../services/WbotServices/SendWhatsAppMedia";
 import SendWhatsAppMessage from "../services/WbotServices/SendWhatsAppMessage";
 import CheckContactNumber from "../services/WbotServices/CheckNumber";
 import CheckIsValidContact from "../services/WbotServices/CheckIsValidContact";
@@ -247,7 +247,7 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
     //const ticket = await ShowTicketService(createTicket.id, companyId);       
 
     if (medias) {
-      await Promise.all(
+      /*await Promise.all(
         medias.map(async (media: Express.Multer.File) => {
           await req.app.get("queues").messageQueue.add(
             "SendMessage",
@@ -262,6 +262,11 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
             },
             { removeOnComplete: true, attempts: 3 }
           );
+        })
+      );*/
+      await Promise.all(
+        medias.map(async (media: Express.Multer.File) => {
+          await SendWhatsAppMediaAPI({ number, media, body, });
         })
       );
     } else {

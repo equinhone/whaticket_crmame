@@ -1,7 +1,7 @@
 import { proto, WASocket } from "@whiskeysockets/baileys";
 import WALegacySocket from "@whiskeysockets/baileys"
 import AppError from "../../errors/AppError";
-import GetTicketWbot from "../../helpers/GetTicketWbot";
+import {GetTicketWbot} from "../../helpers/GetTicketWbot";
 import GetWbotMessage from "../../helpers/GetWbotMessage";
 import Message from "../../models/Message";
 import Ticket from "../../models/Ticket";

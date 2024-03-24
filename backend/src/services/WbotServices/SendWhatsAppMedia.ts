@@ -5,14 +5,20 @@ import { exec } from "child_process";
 import path from "path";
 import ffmpegPath from "@ffmpeg-installer/ffmpeg";
 import AppError from "../../errors/AppError";
-import GetTicketWbot from "../../helpers/GetTicketWbot";
+import {GetTicketWbot, GetWbotAPI} from "../../helpers/GetTicketWbot";
 import Ticket from "../../models/Ticket";
 import mime from "mime-types";
 
 interface Request {
   media: Express.Multer.File;
-  ticket: Ticket;
+  ticket: Ticket;  
   body?: string;
+}
+
+interface RequestAPI {  
+  number?:string;
+  body?: string;
+  media: Express.Multer.File;
 }
 
 const publicFolder = path.resolve(__dirname, "..", "..", "..", "public");
@@ -110,11 +116,9 @@ export const getMessageOptions = async (
   }
 };
 
-const SendWhatsAppMedia = async ({
-  media,
-  ticket,
-  body
-}: Request): Promise<WAMessage> => {
+export async function SendWhatsAppMedia({
+  media, ticket, body
+}: Request): Promise<WAMessage> {
   try {
     const wbot = await GetTicketWbot(ticket);
 
@@ -152,7 +156,7 @@ const SendWhatsAppMedia = async ({
         fileName: media.originalname,
         mimetype: media.mimetype
       };
-     } else if (typeMessage === "application") {
+    } else if (typeMessage === "application") {
       options = {
         document: fs.readFileSync(pathMedia),
         caption: body,
@@ -181,6 +185,83 @@ const SendWhatsAppMedia = async ({
     console.log(err);
     throw new AppError("ERR_SENDING_WAPP_MSG");
   }
-};
+}
 
-export default SendWhatsAppMedia;
+export async function SendWhatsAppMediaAPI({
+  number, body, media,
+}: RequestAPI): Promise<WAMessage> {
+  try {
+    //const wbot = await GetTicketWbot(ticket);
+    const wbot = GetWbotAPI('1');
+
+    const pathMedia = media.path;
+    const typeMessage = media.mimetype.split("/")[0];
+    let options: AnyMessageContent;
+
+    if (typeMessage === "video") {
+      options = {
+        video: fs.readFileSync(pathMedia),
+        caption: body,
+        fileName: media.originalname
+        // gifPlayback: true
+      };
+    } else if (typeMessage === "audio") {
+      const typeAudio = media.originalname.includes("audio-record-site");
+      if (typeAudio) {
+        const convert = await processAudio(media.path);
+        options = {
+          audio: fs.readFileSync(convert),
+          mimetype: typeAudio ? "audio/mp4" : media.mimetype,
+          ptt: true
+        };
+      } else {
+        const convert = await processAudioFile(media.path);
+        options = {
+          audio: fs.readFileSync(convert),
+          mimetype: typeAudio ? "audio/mp4" : media.mimetype
+        };
+      }
+    } else if (typeMessage === "document" || typeMessage === "text") {
+      options = {
+        document: fs.readFileSync(pathMedia),
+        caption: body,
+        fileName: media.originalname,
+        mimetype: media.mimetype
+      };
+    } else if (typeMessage === "application") {
+      options = {
+        document: fs.readFileSync(pathMedia),
+        caption: body,
+        fileName: media.originalname,
+        mimetype: media.mimetype
+      };
+    } else {
+      options = {
+        image: fs.readFileSync(pathMedia),
+        caption: body
+      };
+    }
+
+
+
+    const sentMessage = await (await wbot).sendMessage(
+      `${number}@${false ? "g.us" : "s.whatsapp.net"}`,
+      {
+        ...options
+      }
+    );
+
+    //await ticket.update({ lastMessage: media.filename });
+    return sentMessage;
+  } catch (err) {
+    Sentry.captureException(err);
+    console.log(err);
+    throw new AppError("ERR_SENDING_WAPP_MSG");
+  }
+}
+
+/*export default {
+  SendWhatsAppMedia,SendWhatsAppMediaAPI
+}*/
+
+
