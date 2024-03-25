@@ -206,6 +206,11 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
   const messageData: MessageData = req.body;
   const medias = req.files as Express.Multer.File[];
 
+
+  console.log(whatsappId)
+  console.log(messageData)
+  console.log(medias)
+
   try {
     const whatsapp = await Whatsapp.findByPk(whatsappId);
 
