@@ -166,7 +166,7 @@ export async function SendWhatsAppMedia({
     } else {
       options = {
         image: fs.readFileSync(pathMedia),
-        caption:""// body
+        caption:body
       };
     }
 
