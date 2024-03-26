@@ -328,10 +328,10 @@ export const checkNumberAPI = async (req: Request, res: Response): Promise<Respo
       throw new Error("O número é obrigatório");
     }
 
-    //const numberToTest = messageData.number;
-    //const companyId = whatsapp.companyId;
+    const numberToTest = messageData.number;
+    const companyId = whatsapp.companyId;
 
-    //const CheckValidNumber = await CheckContactNumber(numberToTest, companyId);
+    const CheckValidNumber = await CheckContactNumber(numberToTest, companyId);
 
     //console.log(CheckValidNumber);
     //const number = CheckValidNumber.jid.replace(/\D/g, "");
@@ -350,7 +350,7 @@ export const checkNumberAPI = async (req: Request, res: Response): Promise<Respo
       companyId
     };*/
 
-    return res.status(200).json(contactData);
+    return res.status(200).json(CheckValidNumber);
   } catch (err: any) {
     if (Object.keys(err).length === 0) {
       throw new AppError(
