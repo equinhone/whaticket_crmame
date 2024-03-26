@@ -341,6 +341,8 @@ export const checkNumberAPI = async (req: Request, res: Response): Promise<Respo
     const contactData = {
       name: `${number}`,
       number,
+      validation:CheckValidNumber.exists,
+      jid:CheckValidNumber.jid,
       profilePicUrl,
       isGroup: false,
       companyId
