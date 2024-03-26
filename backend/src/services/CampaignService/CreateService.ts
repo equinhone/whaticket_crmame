@@ -44,6 +44,8 @@ const CreateService = async (data: Data): Promise<Campaign> => {
 
   const record = await Campaign.create(data);
 
+  console.log(record)
+
   await record.reload({
     include: [
       { model: ContactList },
