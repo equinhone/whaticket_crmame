@@ -54,7 +54,7 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
   const { companyId } = req.user;
   const data = req.body as StoreData;
 
-  console.log(data)
+  //console.log(data)
 
   const schema = Yup.object().shape({
     name: Yup.string().required()

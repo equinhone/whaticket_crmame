@@ -279,6 +279,9 @@ async function handleVerifyCampaigns(job) {
       const now = moment();
       const scheduledAt = moment(campaign.scheduledAt);
       const delay = scheduledAt.diff(now, "milliseconds");
+      
+      
+      
       logger.info(
         `Campanha enviada para a fila de processamento: Campanha=${campaign.id}, Delay Inicial=${delay}`
       );

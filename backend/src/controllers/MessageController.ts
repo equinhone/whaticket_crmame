@@ -140,7 +140,7 @@ export const send = async (req: Request, res: Response): Promise<Response> => {
 
     const ticket = await ShowTicketService(createTicket.id, companyId);
     
-    console.log(body)
+    //console.log(body)
 
     if (medias) {
       await Promise.all(

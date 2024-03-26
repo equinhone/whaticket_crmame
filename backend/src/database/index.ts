@@ -41,6 +41,9 @@ const dbConfig = require("../config/database");
 
 const sequelize = new Sequelize(dbConfig);
 
+
+
+
 const models = [
   Company,
   User,
