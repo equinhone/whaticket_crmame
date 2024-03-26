@@ -318,6 +318,8 @@ export const checkNumberAPI = async (req: Request, res: Response): Promise<Respo
   try {
     const whatsapp = await Whatsapp.findByPk(messageData.whatsappid);
 
+    console.log(whatsapp)
+    
     if (!whatsapp) {
       throw new Error("Não foi possível realizar a operação");
     }
@@ -326,14 +328,14 @@ export const checkNumberAPI = async (req: Request, res: Response): Promise<Respo
       throw new Error("O número é obrigatório");
     }
 
-    const numberToTest = messageData.number;
-    const companyId = whatsapp.companyId;
+    //const numberToTest = messageData.number;
+    //const companyId = whatsapp.companyId;
 
-    const CheckValidNumber = await CheckContactNumber(numberToTest, companyId);
+    //const CheckValidNumber = await CheckContactNumber(numberToTest, companyId);
 
-    console.log(CheckValidNumber);
-    const number = CheckValidNumber.jid.replace(/\D/g, "");
-    const profilePicUrl = await GetProfilePicUrl(
+    //console.log(CheckValidNumber);
+    //const number = CheckValidNumber.jid.replace(/\D/g, "");
+    /*const profilePicUrl = await GetProfilePicUrl(
       number,
       companyId
     );
@@ -341,12 +343,12 @@ export const checkNumberAPI = async (req: Request, res: Response): Promise<Respo
     const contactData = {
       name: `${number}`,
       number,
-      validation:CheckValidNumber.exists,
+      valid:CheckValidNumber.exists,
       jid:CheckValidNumber.jid,
       profilePicUrl,
       isGroup: false,
       companyId
-    };
+    };*/
 
     return res.status(200).json(contactData);
   } catch (err: any) {
