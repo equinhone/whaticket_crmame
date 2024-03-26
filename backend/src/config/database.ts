@@ -1,3 +1,4 @@
+import { Console } from "console";
 import "../bootstrap";
 
 module.exports = {
@@ -9,9 +10,9 @@ module.exports = {
   
   dialectOptions: { 
     useUTC: false,
-    timezone: '-04:00' // for reading the data
+    timezone: process.env.DB_TIMEZONE // for reading the data
   },
-  timezone: '-04:00', // for writing the data
+  timezone: process.env.DB_TIMEZONE, // for writing the data
 
   host: process.env.DB_HOST,
   port: process.env.DB_PORT || 3306,

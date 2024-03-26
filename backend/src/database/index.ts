@@ -39,6 +39,8 @@ import BaileysChats from "../models/BaileysChats";
 const dbConfig = require("../config/database");
 // import dbConfig from "../config/database";
 
+console.log(process.env.DB_TIMEZONE)
+
 const sequelize = new Sequelize(dbConfig);
 
 
