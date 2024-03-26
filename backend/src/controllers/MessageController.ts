@@ -352,12 +352,13 @@ export const checkNumberAPI = async (req: Request, res: Response): Promise<Respo
 
     return res.status(200).json(CheckValidNumber);
   } catch (err: any) {
-    if (Object.keys(err).length === 0) {
+    res.send(err).status(500);
+    /*if (Object.keys(err).length === 0) {
       throw new AppError(
         "Não foi possível enviar a mensagem, tente novamente em alguns instantes"
       );
     } else {
       throw new AppError(err.message);
-    }
+    }*/
   }
 }
