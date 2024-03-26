@@ -80,8 +80,8 @@ export const update = async (
 ): Promise<Response> => {
   const token: string = req.cookies.jrt;
 
-  console.log('iniciando autenticacao')
-  console.log(token)
+  //console.log('iniciando autenticacao')
+  //console.log(token)
 
   if (!token) {
     throw new AppError("ERR_SESSION_EXPIRED", 401);
@@ -102,7 +102,7 @@ export const me = async (req: Request, res: Response): Promise<Response> => {
   const user = await FindUserFromToken(token);
   const { id, profile, super: superAdmin } = user;
   
-  console.log(token)
+  //console.log(token)
 
   if (!token) {
     throw new AppError("ERR_SESSION_EXPIRED", 401);

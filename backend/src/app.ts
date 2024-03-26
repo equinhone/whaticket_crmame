@@ -45,7 +45,7 @@ app/*.use(
   next();   
 });*/
 
-console.log("testando o cors")
+//console.log("testando o cors")
 
 app.use(
   cors({   

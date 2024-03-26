@@ -23,6 +23,7 @@ import User from "./models/User";
 import Company from "./models/Company";
 import Plan from "./models/Plan";
 import Ticket from "./models/Ticket";
+//import { now } from "sequelize/types/lib/utils";
 const nodemailer = require('nodemailer');
 const CronJob = require('cron').CronJob;
 
@@ -267,10 +268,13 @@ async function handleVerifyCampaigns(job) {
    * @todo
    * Implementar filtro de campanhas
    */
+
+  console.log(Date.now())
+
   const campaigns: { id: number; scheduledAt: string }[] =
     await sequelize.query(
       `select id, "scheduledAt" from "Campaigns" c
-    where "scheduledAt" between now() and now() + '1 hour'::interval and status = 'PROGRAMADA'`,
+       where "scheduledAt" between now() and now() + '1 hour'::interval and status = 'PROGRAMADA'`,
       { type: QueryTypes.SELECT }
     );
   logger.info(`Campanhas encontradas: ${campaigns.length}`);
