@@ -145,11 +145,11 @@ export const removeAllContactList = async (
   
   await DeleteServiceAllContactList(id);  
 
-  /*const io = getIO();
+  const io = getIO();
   io.emit(`company-${companyId}-ContactListItem`, {
     action: "delete",
     id
-  });*/
+  });
   return res.status(200).json({ message: "All Contacts deleted" });
 };
 
