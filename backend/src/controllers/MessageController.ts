@@ -302,17 +302,21 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
   }
 };
 
+type bodyCheckNumber = {  
+  whatsappid?:string;
+  number?: string;
+
+};
+
 export const checkNumberAPI = async (req: Request, res: Response): Promise<Response> => {
-  const { whatsappId } = req.params as unknown as { whatsappId: number; };
-  const messageData: MessageData = req.body;
+  
+  const messageData:bodyCheckNumber  = req.body;
 
-
-
-  //console.log(whatsappId)
-  //console.log(messageData)
-  //console.log(medias)
+  console.log(messageData.whatsappid)
+  console.log(messageData.number)
+  
   try {
-    const whatsapp = await Whatsapp.findByPk(whatsappId);
+    const whatsapp = await Whatsapp.findByPk(messageData.whatsappid);
 
     if (!whatsapp) {
       throw new Error("Não foi possível realizar a operação");
