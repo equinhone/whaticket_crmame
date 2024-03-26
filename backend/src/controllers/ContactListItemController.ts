@@ -143,8 +143,7 @@ export const removeAllContactList = async (
 
   console.log(id)
   
-  await DeleteServiceAllContactList(id);
-  
+  await DeleteServiceAllContactList(id);  
 
   /*const io = getIO();
   io.emit(`company-${companyId}-ContactListItem`, {
