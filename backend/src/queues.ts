@@ -269,7 +269,7 @@ async function handleVerifyCampaigns(job) {
    * Implementar filtro de campanhas
    */
 
-  console.log(Date.now())
+  //console.log(Date.now())
 
   const campaigns: { id: number; scheduledAt: string }[] =
     await sequelize.query(

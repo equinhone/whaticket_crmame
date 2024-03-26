@@ -25,4 +25,10 @@ routes.delete(
   ContactListItemController.remove
 );
 
+routes.delete(
+  "/contact-list-items-list/:id",
+  isAuth,
+  ContactListItemController.removeAllContactList
+);
+
 export default routes;

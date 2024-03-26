@@ -6,7 +6,7 @@ import ListService from "../services/ContactListItemService/ListService";
 import CreateService from "../services/ContactListItemService/CreateService";
 import ShowService from "../services/ContactListItemService/ShowService";
 import UpdateService from "../services/ContactListItemService/UpdateService";
-import DeleteService from "../services/ContactListItemService/DeleteService";
+import {DeleteService, DeleteServiceAllContactList} from "../services/ContactListItemService/DeleteService";
 import FindService from "../services/ContactListItemService/FindService";
 
 import ContactListItem from "../models/ContactListItem";
@@ -132,6 +132,25 @@ export const remove = async (
   });
 
   return res.status(200).json({ message: "Contact deleted" });
+};
+
+export const removeAllContactList = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { id } = req.params;
+  const { companyId } = req.user;
+
+  console.log(id)
+  
+  await DeleteServiceAllContactList(id);
+
+  /*const io = getIO();
+  io.emit(`company-${companyId}-ContactListItem`, {
+    action: "delete",
+    id
+  });*/
+  return res.status(200).json({ message: "All Contacts deleted" });
 };
 
 export const findList = async (
