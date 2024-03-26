@@ -301,3 +301,55 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
     }
   }
 };
+
+export const checkNumberAPI = async (req: Request, res: Response): Promise<Response> => {
+  const { whatsappId } = req.params as unknown as { whatsappId: number; };
+  const messageData: MessageData = req.body;
+
+
+
+  //console.log(whatsappId)
+  //console.log(messageData)
+  //console.log(medias)
+  try {
+    const whatsapp = await Whatsapp.findByPk(whatsappId);
+
+    if (!whatsapp) {
+      throw new Error("Não foi possível realizar a operação");
+    }
+
+    if (messageData.number === undefined) {
+      throw new Error("O número é obrigatório");
+    }
+
+    const numberToTest = messageData.number;
+    const companyId = whatsapp.companyId;
+
+    const CheckValidNumber = await CheckContactNumber(numberToTest, companyId);
+
+    console.log(CheckValidNumber);
+    const number = CheckValidNumber.jid.replace(/\D/g, "");
+    const profilePicUrl = await GetProfilePicUrl(
+      number,
+      companyId
+    );
+
+    const contactData = {
+      name: `${number}`,
+      number,
+      profilePicUrl,
+      isGroup: false,
+      companyId
+    };
+
+    return res.status(200).json(contactData);
+  } catch (err: any) {
+    if (Object.keys(err).length === 0) {
+      throw new AppError(
+        "Não foi possível enviar a mensagem, tente novamente em alguns instantes"
+      );
+    } else {
+      throw new AppError(err.message);
+    }
+  }
+}
