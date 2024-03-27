@@ -49,7 +49,7 @@ app/*.use(
 
 app.use(
   cors({   
-    origin: ['http://localhost:3000', 'https://demo.amezap.com.br', 'https://devapp.amezap.com.br'],
+    origin: ['http://localhost:3000', 'https://demo.amezap.com.br', 'https://devapp.amezap.com.br','https://app.amezap.com.br'],
     //origin: 'http://localhost:3000' , 
     credentials :  true,  
     methods: 'GET,PUT,POST,DELETE,OPTIONS', 
