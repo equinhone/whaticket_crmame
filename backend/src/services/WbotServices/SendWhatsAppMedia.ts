@@ -116,6 +116,72 @@ export const getMessageOptions = async (
   }
 };
 
+export const getMessageOptionsAPI = async (
+  body:string,
+  fileName: string,
+  pathMedia: string
+): Promise<any> => {
+  const mimeType = mime.lookup(pathMedia);
+  const typeMessage = mimeType.split("/")[0];
+
+  try {
+    if (!mimeType) {
+      throw new Error("Invalid mimetype");
+    }
+    let options: AnyMessageContent;
+
+    if (typeMessage === "video") {
+      options = {
+        video: fs.readFileSync(pathMedia),
+        // caption: fileName,
+        fileName: fileName
+        // gifPlayback: true
+      };
+    } else if (typeMessage === "audio") {
+      const typeAudio = fileName.includes("audio-record-site");
+      const convert = await processAudio(pathMedia);
+      if (typeAudio) {
+        options = {
+          audio: fs.readFileSync(convert),
+          mimetype: typeAudio ? "audio/mp4" : mimeType,
+          ptt: true
+        };
+      } else {
+        options = {
+          audio: fs.readFileSync(convert),
+          mimetype: typeAudio ? "audio/mp4" : mimeType,
+          ptt: true
+        };
+      }
+    } else if (typeMessage === "document") {
+      options = {
+        document: fs.readFileSync(pathMedia),
+        caption: body,
+        fileName: fileName,
+        mimetype: mimeType
+      };
+    } else if (typeMessage === "application") {
+      options = {
+        document: fs.readFileSync(pathMedia),
+        caption: body,
+        fileName: fileName,
+        mimetype: mimeType
+      };
+    } else {
+      options = {
+        image: fs.readFileSync(pathMedia),
+        caption: body
+      };
+    }
+
+    return options;
+  } catch (e) {
+    Sentry.captureException(e);
+    console.log(e);
+    return null;
+  }
+};
+
 export async function SendWhatsAppMedia({
   media, ticket, body
 }: Request): Promise<WAMessage> {

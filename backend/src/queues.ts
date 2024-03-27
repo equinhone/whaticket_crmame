@@ -16,7 +16,7 @@ import CampaignSetting from "./models/CampaignSetting";
 import CampaignShipping from "./models/CampaignShipping";
 import GetWhatsappWbot from "./helpers/GetWhatsappWbot";
 import sequelize from "./database";
-import { getMessageOptions } from "./services/WbotServices/SendWhatsAppMedia";
+import { getMessageOptions, getMessageOptionsAPI } from "./services/WbotServices/SendWhatsAppMedia";
 import { getIO } from "./libs/socket";
 import path from "path";
 import User from "./models/User";
@@ -666,16 +666,19 @@ async function handleDispatchCampaign(job) {
       });
       await campaignShipping.update({ confirmationRequestedAt: moment() });
     } else {
-      await wbot.sendMessage(chatId, {
-        text: campaignShipping.message
-      });
+      
       if (campaign.mediaPath) {
         const filePath = path.resolve("public", campaign.mediaPath);
-        const options = await getMessageOptions(campaign.mediaName, filePath);
+        const options = await getMessageOptionsAPI(campaignShipping.message, campaign.mediaName, filePath);
         if (Object.keys(options).length) {
           await wbot.sendMessage(chatId, { ...options });
         }
-      }
+      } else{
+        await wbot.sendMessage(chatId, {
+          text: campaignShipping.message
+        });
+      }    
+      
       await campaignShipping.update({ deliveredAt: moment() });
     }
 
