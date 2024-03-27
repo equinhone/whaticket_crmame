@@ -201,6 +201,7 @@ export const send = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
+
 export const sendMessage = async (req: Request, res: Response): Promise<Response> => {
   const { whatsappId } = req.params as unknown as { whatsappId: number };
   const messageData: MessageData = req.body;
