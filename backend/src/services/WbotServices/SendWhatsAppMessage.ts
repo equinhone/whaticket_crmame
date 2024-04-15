@@ -2,7 +2,8 @@ import { WAMessage } from "@whiskeysockets/baileys";
 import WALegacySocket from "@whiskeysockets/baileys"
 import * as Sentry from "@sentry/node";
 import AppError from "../../errors/AppError";
-import {GetTicketWbot} from "../../helpers/GetTicketWbot";
+//import {GetTicketWbot} from "../../helpers/GetTicketWbot";
+import {GetTicketWbot, GetWbotAPI} from "../../helpers/GetTicketWbot";
 import Message from "../../models/Message";
 import Ticket from "../../models/Ticket";
 
@@ -11,6 +12,12 @@ import formatBody from "../../helpers/Mustache";
 interface Request {
   body: string;
   ticket: Ticket;
+  quotedMsg?: Message;
+}
+
+interface RequestAPI {
+  number:string;
+  body: string;  
   quotedMsg?: Message;
 }
 
@@ -63,5 +70,31 @@ const SendWhatsAppMessage = async ({
     throw new AppError("ERR_SENDING_WAPP_MSG");
   }
 };
+
+export async function SendWhatsAppMessageAPI({
+  number, body, quotedMsg
+}: RequestAPI): Promise<WAMessage> {
+  let options = {};
+  const wbot = GetWbotAPI('1');
+  
+
+  try {
+    const sentMessage = await (await wbot).sendMessage(
+      `${number}@${false ? "g.us" : "s.whatsapp.net"}`,{
+        text:body  
+      },
+      {
+        ...options
+      }
+    );  
+    
+    //await ticket.update({ lastMessage: formatBody(body, ticket.contact) });
+    return sentMessage;
+  } catch (err) {
+    Sentry.captureException(err);
+    console.log(err);
+    throw new AppError("ERR_SENDING_WAPP_MSG");
+  }
+}
 
 export default SendWhatsAppMessage;

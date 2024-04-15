@@ -671,7 +671,7 @@ async function handleDispatchCampaign(job) {
         const filePath = path.resolve("public", campaign.mediaPath);
         const options = await getMessageOptionsAPI(campaignShipping.message, campaign.mediaName, filePath);
         if (Object.keys(options).length) {
-          await wbot.sendMessage(chatId, { ...options });
+          await wbot.sendMessage(chatId, { ...options });          
         }
       } else{
         await wbot.sendMessage(chatId, {

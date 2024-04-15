@@ -14,7 +14,7 @@ import FindOrCreateTicketService from "../services/TicketServices/FindOrCreateTi
 import UpdateTicketService from "../services/TicketServices/UpdateTicketService";
 import DeleteWhatsAppMessage from "../services/WbotServices/DeleteWhatsAppMessage";
 import {SendWhatsAppMedia, SendWhatsAppMediaAPI} from "../services/WbotServices/SendWhatsAppMedia";
-import SendWhatsAppMessage from "../services/WbotServices/SendWhatsAppMessage";
+import SendWhatsAppMessage, { SendWhatsAppMessageAPI } from "../services/WbotServices/SendWhatsAppMessage";
 import CheckContactNumber from "../services/WbotServices/CheckNumber";
 import CheckIsValidContact from "../services/WbotServices/CheckIsValidContact";
 import GetProfilePicUrl from "../services/WbotServices/GetProfilePicUrl";
@@ -276,8 +276,8 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
         })
       );
     } else {
-      /*await SendWhatsAppMessage({ body, ticket });
-      setTimeout(async () => {
+      await SendWhatsAppMessageAPI({ number, body });
+      /*setTimeout(async () => {
         await UpdateTicketService({
           ticketId: ticket.id,
           ticketData: { status: "closed" },
