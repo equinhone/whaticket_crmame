@@ -16,6 +16,7 @@ interface Request {
 }
 
 interface RequestAPI {  
+  companyId:number;
   number?:string;
   body?: string;
   media: Express.Multer.File;
@@ -254,11 +255,11 @@ export async function SendWhatsAppMedia({
 }
 
 export async function SendWhatsAppMediaAPI({
-  number, body, media,
+  companyId,number, body, media,
 }: RequestAPI): Promise<WAMessage> {
   try {
     //const wbot = await GetTicketWbot(ticket);
-    const wbot = GetWbotAPI('1');
+    const wbot = GetWbotAPI(companyId);
 
     const pathMedia = media.path;
     const typeMessage = media.mimetype.split("/")[0];

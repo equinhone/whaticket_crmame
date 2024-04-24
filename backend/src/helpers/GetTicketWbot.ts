@@ -20,7 +20,7 @@ export const GetTicketWbot = async (ticket: Ticket): Promise<Session> => {
   return wbot;
 };
 
-export const GetWbotAPI = async (aNumber:string): Promise<Session> => {
+export const GetWbotAPI = async (ACompany:number): Promise<Session> => {
   /*if (!ticket.whatsappId) {
     const defaultWhatsapp = await GetDefaultWhatsApp(ticket.user.id);
 

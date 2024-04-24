@@ -31,6 +31,15 @@ type MessageData = {
   number?: string;
 };
 
+type MessageDataAPI = {
+  companyid:number;
+  body: string;
+  fromMe: boolean;
+  read: boolean;
+  quotedMsg?: Message;
+  number?: string;
+};
+
 export const index = async (req: Request, res: Response): Promise<Response> => {
   const { ticketId } = req.params;
   const { pageNumber } = req.query as IndexQuery;
@@ -204,7 +213,7 @@ export const send = async (req: Request, res: Response): Promise<Response> => {
 
 export const sendMessage = async (req: Request, res: Response): Promise<Response> => {
   const { whatsappId } = req.params as unknown as { whatsappId: number };
-  const messageData: MessageData = req.body;
+  const messageData: MessageDataAPI = req.body;
   const medias = req.files as Express.Multer.File[];
 
 
@@ -226,8 +235,8 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
     const numberToTest = messageData.number;
     const body = messageData.body;
     //console.log("Body: "+body)
-    const companyId = whatsapp.companyId;
-
+    //const companyId = whatsapp.companyId;
+    const companyId:number = messageData.companyid
     const CheckValidNumber = await CheckContactNumber(numberToTest, companyId);
     const number = CheckValidNumber.jid.replace(/\D/g, "");
     const profilePicUrl = await GetProfilePicUrl(
@@ -272,11 +281,11 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
       );*/
       await Promise.all(
         medias.map(async (media: Express.Multer.File) => {
-          await SendWhatsAppMediaAPI({ number, media, body, });
+          await SendWhatsAppMediaAPI({companyId, number, media, body, });
         })
       );
     } else {
-      await SendWhatsAppMessageAPI({ number, body });
+      await SendWhatsAppMessageAPI({companyId, number, body });
       /*setTimeout(async () => {
         await UpdateTicketService({
           ticketId: ticket.id,

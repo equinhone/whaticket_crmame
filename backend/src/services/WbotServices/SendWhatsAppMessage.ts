@@ -16,6 +16,7 @@ interface Request {
 }
 
 interface RequestAPI {
+  companyId:number;
   number:string;
   body: string;  
   quotedMsg?: Message;
@@ -72,11 +73,10 @@ const SendWhatsAppMessage = async ({
 };
 
 export async function SendWhatsAppMessageAPI({
-  number, body, quotedMsg
+  companyId,number, body, quotedMsg
 }: RequestAPI): Promise<WAMessage> {
   let options = {};
-  const wbot = GetWbotAPI('1');
-  
+  const wbot = GetWbotAPI(companyId);  
 
   try {
     const sentMessage = await (await wbot).sendMessage(
