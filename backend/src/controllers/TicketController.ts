@@ -7,7 +7,7 @@ import DeleteTicketService from "../services/TicketServices/DeleteTicketService"
 import ListTicketsService from "../services/TicketServices/ListTicketsService";
 import ShowTicketUUIDService from "../services/TicketServices/ShowTicketFromUUIDService";
 import ShowTicketService from "../services/TicketServices/ShowTicketService";
-import UpdateTicketService from "../services/TicketServices/UpdateTicketService";
+import UpdateTicketService, { UpdateTicketServiceAPI, UpdateTicketServiceAPIClosed } from "../services/TicketServices/UpdateTicketService";
 import ListTicketsServiceKanban from "../services/TicketServices/ListTicketsServiceKanban";
 
 type IndexQuery = {
@@ -188,6 +188,23 @@ export const update = async (
     companyId
   });
 
+
+  return res.status(200).json(ticket);
+};
+
+export const updateAPI = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { ticketId } = req.params;
+  const ticketData: TicketData = req.body;
+  const { companyId } = req.user;  
+  
+  const { ticket } = await UpdateTicketServiceAPIClosed({
+    ticketData,
+    ticketId,
+    companyId
+  });
 
   return res.status(200).json(ticket);
 };
